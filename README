@@ -1,3 +1,4 @@
+<<<<<<< HEAD:README
 
 
 hello
@@ -5,3 +6,6 @@ hello
 more tests!
 
 
+=======
+hello again.
+>>>>>>> testBranch:README
