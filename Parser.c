@@ -14,8 +14,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+/*
 #include "Parser.h"
 #include "checksum.h"
+ */
 
 /*********************************************/
 /* 				includes					 */
