@@ -48,9 +48,14 @@ void gpsSentenceConfig(void){
 }
 
 void gpsFreqConfig(void){
-	unsigned char chFreq [] = "$PMTK300,200,0,0,0,0*2F\r\n\0";	
+	/*
+    unsigned char chFreq [] = "$PMTK300,200,0,0,0,0*2F\r\n\0";	
 	putsUART1((unsigned int *)chFreq);
-	while(BusyUART1());	
+	while(BusyUART1());
+    */	
+	putsUART1("$PMTK300,999,0,0,0,0*2F\r\n\0");
+	while(BusyUART1());
+    
 }
 
 
@@ -118,7 +123,8 @@ void uartInit (void){
 	
 	// Configure the frequency to 5 Hz
 	gpsFreqConfig();
-	
+    	
+/*
 	// Disable the port and TX;
 	U1MODEbits.UARTEN	= 0;		// Disable the port	
 
@@ -131,9 +137,10 @@ void uartInit (void){
   	// Enable the port;
 	U1STAbits.UTXEN		= 0;		// Disable TX	
   	U1MODEbits.UARTEN	= 1;		// Enable the port		
+    */
 }
 
-
+/*
 // Interrupt service routine for U1 GPS port
 void __attribute__((__interrupt__, no_auto_psv)) _U1RXInterrupt(void){
  
@@ -177,3 +184,4 @@ void gpsRead(unsigned char* gpsChunk){
 		gpsChunk[i] = readFront(uartBuffer);
 	}
 }
+*/
