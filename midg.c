@@ -1,18 +1,18 @@
-// Code by: John B. Burr, based on bufferedUART.c by
+// Code by: John B. Burr, heavily based on bufferedUART.c
 // Started 5/17/09
 
 #include "midg.h"
 
 // globals to be set up in init()
-struct CircBuffer uartBufferData;  // not to ever be used!
-CBRef uartBuffer;   // use the pointer!
+struct CircBuffer midgUartBufferData;  // struct should never be used directly!
+CBRef midgUartBuffer;   // use the pointer!
 
 // FIXME: still has gps-specific calls and setup in it!
 // UART and Buffer initialization
-void uartInit (void){
+void midgInit (void){
 	// initialize the circular buffer
-	uartBuffer = (struct CircBuffer*)&uartBufferData;
-	newCircBuffer(uartBuffer);
+	midgUartBuffer = (struct CircBuffer*)&midgUartBufferData;
+	newCircBuffer(midgUartBuffer);
 	
 	// Configure and open the port;
 	// UxMODE Register (set by #define in midg.h)
@@ -32,12 +32,13 @@ void uartInit (void){
 	
 	// UxSTA Register (set by #define in midg.h)
 	// ==============
-	USTAbits.URXISEL	= 2;		// RX interrupt when 3 chars are in
+	//USTAbits.URXISEL	= 2;		// RX interrupt when 3 chars are in
+    USTAbits.URXISEL	= 0;		// RX interrupt when just one char comes in
 	USTAbits.OERR		= 0;		// clear overun error
 	
 	// UxBRG Register (set by #define in midg.h)
 	// ==============
-	UBRG = MIDG_UBRGI;			// Set the baud rate for MIDG's default
+	UBRG = MIDG_UBRG;			// Set the baud rate for MIDG's default
 
 	// Enable the port;
 	UMODEbits.UARTEN	= 1;		// Enable the port
@@ -50,7 +51,7 @@ void uartInit (void){
 		Nop();
 	}
 
-	// Configure the GPS sentences and change the baud Rate
+/*	// Configure the GPS sentences and change the baud Rate
 	gpsSentenceConfig();
 	
 	// Disable the port and TX;
@@ -74,7 +75,7 @@ void uartInit (void){
 	
 	// Disable the port and TX;
 	UMODEbits.UARTEN	= 0;		// Disable the port	
-
+*/
 	// Initialize the Interrupt  
   	URXIP   = 6;    		// Interrupt priority 6  
   	URXIF   = 0;    		// Clear the interrupt flag
@@ -83,4 +84,48 @@ void uartInit (void){
   	// Enable the port;
 	USTAbits.UTXEN		= 0;		// Disable TX	
   	UMODEbits.UARTEN	= 1;		// Enable the port		
+}
+
+// Interrupt service routine for MIDG UART port, selected in midg.h
+#if _MIDG_UART1_
+void __attribute__((__interrupt__, no_auto_psv)) _U1RXInterrupt(void){
+#elif _MIDG_UART2_
+void __attribute__((__interrupt__, no_auto_psv)) _U2RXInterrupt(void){
+#endif
+	// Read the buffer while it has data
+	// and add it to the circular buffer
+	while(USTAbits.URXDA == 1){
+		writeBack(midgUartBuffer, (unsigned char)URXREG);
+	}
+	
+	// If there was an overun error clear it and continue
+	if (USTAbits.OERR == 1){
+		USTAbits.OERR = 0;
+	}
+	
+	// clear the interrupt
+	URXIF = 0;
+}
+
+
+
+void midgRead(unsigned char* midgChunk) {
+    unsigned int tmpLen = getLength(midgUartBuffer);
+    unsigned int i;
+    
+    // midgChunk[0] = bytes in midgChunk after read
+    // midgChunk[MIDG_CHUNKSIZE-1] = bytes remaining in buffer after read
+    if ( tmpLen > MIDG_CHUNKSIZE - 2 ) {
+        // max after front, last removed
+        midgChunk[0] = MIDG_CHUNKSIZE - 2;  
+        midgChunk[MIDG_CHUNKSIZE-1] = tmpLen - midgChunk[0];
+    } else {
+        midgChunk[0] = tmpLen;
+        // no more bytes will be left in buffer after read (based on tmpLen)
+        midgChunk[MIDG_CHUNKSIZE-1] = 0;
+    }
+    
+    for ( i = 1; i <= midgChunk[0]; i++ ) {
+        midgChunk[i] = readFront(midgUartBuffer);
+    }
 }
