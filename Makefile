@@ -25,5 +25,8 @@ binaryCorruptor: binaryCorruptor.o
 binaryCorruptor.o: binaryCorruptor.c
 	gcc -c -Wall binaryCorruptor.c
 
+Parser: Parser.c
+	gcc -o Parser -Wall Parser.c
+
 clean:
 	rm -f midgSimParserTest midgSimParserTest.o midgSim.o circBuffer.o midg.o
