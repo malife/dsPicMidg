@@ -1,32 +1,29 @@
-# Makefile for Queue ADT
+# Makefile for midgSimParserTest
 #
-# make             makes circBufferDriver
+# make             makes midgSimParserTest
 # make clean       removes object files
 #
 
-circBufferDriver: circBufferDriver.o circBuffer.o gpsSplit.o gpsParse.o
-	gcc -o circBufferDriver circBufferDriver.o circBuffer.o gpsSplit.o gpsParse.o
+midgSimParserTest: midgSimParserTest.o midgSim.o circBuffer.o midg.o
+	gcc -o midgSimParserTest midgSimParserTest.o midgSim.o circBuffer.o midg.o
 
-circBufferDriver.o: circBuffer.h circBufferDriver.c
-	gcc -c  -Wall circBufferDriver.c
+midgSimParserTest.o: midgSimParserTest.c
+	gcc -c -Wall midgSimParserTest.c
+
+midgSim.o: midgSim.h midgSim.c
+	gcc -c -Wall midgSim.c
 
 circBuffer.o: circBuffer.h circBuffer.c
-	gcc -c  -Wall circBuffer.c
+	gcc -c -Wall circBuffer.c
 	
-gpsSplit.o: gpsSplit.c gpsSplit.h apDefinitions.h
-	gcc -c -Wall gpsSplit.c
+midg.o: midg.c midg.h apDefinitions.h circBuffer.h
+	gcc -c -Wall midg.c
 
-gpsParse.o: gpsParse.c gpsParse.h apDefinitions.h
-	gcc -c -Wall gpsParse.c
-	
-protDecoDriver: circBuffer.o gpsSplit.o protDecoder.o protDecoDriver.o
-	gcc -o protDecoDriver protDecoDriver.o circBuffer.o gpsSplit.o
+binaryCorruptor: binaryCorruptor.o
+	gcc -o binaryCorruptor binaryCorruptor.o
 
-protDecoDriver.o: protDecoDriver.c 
-	gcc -c -Wall protDecoDriver.c
-
-protDecoder.o: protDecoder.c apDefinitions.h circBuffer.h gpsSplit.h
-	gcc -c -Wall protDecoder.c
+binaryCorruptor.o: binaryCorruptor.c
+	gcc -c -Wall binaryCorruptor.c
 
 clean:
-	rm -f circBufferDriver circBufferDriver.o circBuffer.o gpsSplit.o gpsParse.o protDecoDriver.o protDecoder.o
+	rm -f midgSimParserTest midgSimParserTest.o midgSim.o circBuffer.o midg.o

@@ -2,6 +2,7 @@
 // Started 5/17/09
 
 #include "midg.h"
+#include "apDefinitions.h"
 
 // midg.c globals to be set up in init()
 struct CircBuffer midgUartBufferData;  // struct should never be used directly!
@@ -134,7 +135,13 @@ CBRef midgUartBuffer;   // use the pointer!
         // clear the interrupt
         URXIF = 0;
     }
-    
+       
+#else
+    void midgInit (void){
+        // initialize the circular buffer
+        midgUartBuffer = newCircBuffer(BSIZE);
+    }
+          
 #endif
 
 
@@ -142,6 +149,8 @@ void midgRead(unsigned char* midgChunk) {
     unsigned int tmpLen = getLength(midgUartBuffer);
     unsigned int i;
     
+   printf("tmpLen before readFront()s = %u\n", tmpLen);
+   
     // midgChunk[0] = bytes in midgChunk after read
     // midgChunk[MIDG_CHUNKSIZE-1] = bytes remaining in buffer after read
     if ( tmpLen > MIDG_CHUNKSIZE - 2 ) {
@@ -157,4 +166,5 @@ void midgRead(unsigned char* midgChunk) {
     for ( i = 1; i <= midgChunk[0]; i++ ) {
         midgChunk[i] = readFront(midgUartBuffer);
     }
+   printf("getLength(midgUartBuffer) = %u\n", getLength(midgUartBuffer));
 }

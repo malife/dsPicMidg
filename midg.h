@@ -2,9 +2,11 @@
 #define _MIDG_H_
 
 #include "circBuffer.h"
+
+#if __IN_DSPIC__
 #include <p33fxxxx.h>
+#endif
 /*
-#include "apDefinitions.h"
 #include <uart.h>
 */
 
