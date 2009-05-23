@@ -6,7 +6,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.47"
+    ComputedModelVersion    "1.53"
     NumModelReferences	    0
     NumTestPointedSignals   0
   }
@@ -44,8 +44,8 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "jburr"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Wed May 20 21:04:43 2009"
-  ModelVersionFormat	  "1.%<AutoIncrement:47>"
+  LastModifiedDate	  "Fri May 22 19:39:12 2009"
+  ModelVersionFormat	  "1.%<AutoIncrement:53>"
   ConfigurationManager	  "None"
   SimulationMode	  "normal"
   LinearizationMsg	  "none"
@@ -322,6 +322,7 @@ Model {
 	  ConfigurationMode	  "Optimized"
 	  ProcessScript		  "dspic_make_rtw_hook"
 	  ConfigAtBuild		  off
+	  CustomHeaderCode	  "#define __IN_DSPIC__ 1\n"
 	  CustomInclude		  "..\\"
 	  CustomSource		  "..\\circBuffer.c ..\\midg.c ..\\midgTest.c "
 "..\\bufferedUART.c"
@@ -589,7 +590,7 @@ Model {
 	PropName		"Components"
       }
       Name		      "Configuration"
-      CurrentDlgPage	      "Solver"
+      CurrentDlgPage	      "Real-Time Workshop/Custom Code"
     }
     PropName		    "ConfigurationSets"
   }
@@ -760,7 +761,7 @@ Model {
   }
   System {
     Name		    "midgTestModel"
-    Location		    [245, 204, 1265, 874]
+    Location		    [1288, 107, 2308, 652]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200

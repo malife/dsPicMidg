@@ -8,28 +8,10 @@
 #include <uart.h>
 */
 
-// select which UART to use 
+// select which UART to use by setting exactly 
+// one of the below to 1, the other(s) to 0
 #define _MIDG_UART1_ 0
 #define _MIDG_UART2_ 1
-
-#if _MIDG_UART1_
-#define UMODEbits U1MODEbits
-#define USTAbits U1STAbits
-#define UBRG U1BRG
-#define URXIP IPC2bits.U1RXIP
-#define URXIF IFS0bits.U1RXIF
-#define URXIE IEC0bits.U1RXIE
-#define URXREG U1RXREG
-
-#elif _MIDG_UART2_
-#define UMODEbits U2MODEbits
-#define USTAbits U2STAbits
-#define UBRG U2BRG
-#define URXIP IPC7bits.U2RXIP
-#define URXIF IFS1bits.U2RXIF
-#define URXIE IEC1bits.U2RXIE
-#define URXREG U2RXREG
-#endif
 
 #define MIDGBAUD 115200
 #define MIDG_UBRG 21 
