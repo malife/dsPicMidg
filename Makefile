@@ -1,38 +1,33 @@
-# Makefile for Queue ADT
+# Makefile for midgSimParserTest
 #
-# make             makes circBufferDriver
+# make             makes midgSimParserTest
 # make clean       removes object files
 #
 
-#circBufferDriver: circBufferDriver.o circBuffer.o gpsSplit.o gpsParse.o
-#	gcc -o circBufferDriver circBufferDriver.o circBuffer.o gpsSplit.o gpsParse.o
-#
-#circBufferDriver.o: circBuffer.h circBufferDriver.c
-#	gcc -c  -Wall circBufferDriver.c
-#
-#circBuffer.o: circBuffer.h circBuffer.c
-#	gcc -c  -Wall circBuffer.c
-#	
-#gpsSplit.o: gpsSplit.c gpsSplit.h apDefinitions.h
-#	gcc -c -Wall gpsSplit.c
-#
-#gpsParse.o: gpsParse.c gpsParse.h apDefinitions.h
-#	gcc -c -Wall gpsParse.c
-#	
-#protDecoDriver: circBuffer.o gpsSplit.o protDecoder.o protDecoDriver.o
-#	gcc -o protDecoDriver protDecoDriver.o circBuffer.o gpsSplit.o
-#
-#protDecoDriver.o: protDecoDriver.c 
-#	gcc -c -Wall protDecoDriver.c
-#
-#protDecoder.o: protDecoder.c apDefinitions.h circBuffer.h gpsSplit.h
-#	gcc -c -Wall protDecoder.c
-#
-#clean:
-#	rm -f circBufferDriver circBufferDriver.o circBuffer.o gpsSplit.o gpsParse.o protDecoDriver.o protDecoder.o
+midgSimParserTest: midgSimParserTest.o midgSim.o circBuffer.o midg.o
+	gcc -o midgSimParserTest midgSimParserTest.o midgSim.o circBuffer.o midg.o
 
+midgSimParserTest.o: midgSimParserTest.c
+	gcc -c -Wall midgSimParserTest.c
 
-Parser: Parser.o
+midgSim.o: midgSim.h midgSim.c
+	gcc -c -Wall midgSim.c
 
-Parser.o: Parser.c
-	gcc -c -Wall Parser.c
+circBuffer.o: circBuffer.h circBuffer.c
+	gcc -c -Wall circBuffer.c
+	
+midg.o: midg.c midg.h apDefinitions.h circBuffer.h
+	gcc -c -Wall midg.c
+
+binaryCorruptor: binaryCorruptor.o
+	gcc -o binaryCorruptor binaryCorruptor.o
+
+binaryCorruptor.o: binaryCorruptor.c
+	gcc -c -Wall binaryCorruptor.c
+
+Parser: Parser.c
+	gcc -o Parser -Wall Parser.c
+
+clean:
+	rm -f midgSimParserTest midgSimParserTest.o midgSim.o circBuffer.o midg.o
+

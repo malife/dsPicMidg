@@ -182,7 +182,7 @@ and data types.
 
 // ifdef switches for debugging and conditional inclusion
 // ======================================================
-#define __IN_DSPIC__ 	1 // switch for use in PC
+#define __IN_DSPIC__ 	0 // switch for use in PC
 
 #if __IN_DSPIC__
 	#ifdef DEBUG
