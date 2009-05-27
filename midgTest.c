@@ -6,29 +6,7 @@
 #include "midg.h"
 #include "circBuffer.h"
 
-#include "bufferedUART.h"
-
-void printToUart2 (const char *fmt, ...){
-	va_list ap;
-	char buf [300];
-	
-	va_start(ap, fmt);
-	vsprintf(buf, fmt, ap);
-	va_end (ap);
-	putsUART2((unsigned int*)buf);
-    while(BusyUART2());	
-}
-
-void printToUart1 (const char *fmt, ...){
-	va_list ap;
-	char buf [300];
-	
-	va_start(ap, fmt);
-	vsprintf(buf, fmt, ap);
-	va_end (ap);
-	putsUART1((unsigned int*)buf);
-    while(BusyUART1());	
-}
+//#include "bufferedUART.h"
 
 void copyMidgToUart2() {
     unsigned char buf[MIDG_CHUNKSIZE];
@@ -48,6 +26,14 @@ void copyMidgToUart2() {
 void copyMidgToUart1() {
     unsigned char buf[MIDG_CHUNKSIZE];
     int i;
+    
+    unsigned char test[] = MSG_DIV(3,5,2,50);
+    midgMsgAppendChecksum( test );
+    printToUart1("test of macros: ");
+    for ( i = 0; i < 9; i++ ) {
+        printToUart1("%u ", (unsigned int)test[i]);
+    }
+    printToUart1("... that was it.\n");
     
     midgRead(buf);
     
