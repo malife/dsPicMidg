@@ -46,16 +46,18 @@ int main(int argc, char** argv) {
       
 	  midgSplit(midgReadBuf);
 	
-/*
-      printf("%u:", midgReadBuf[0]);
+
+/*      printf("%u:", midgReadBuf[0]);
       for ( i = 1; i <= midgReadBuf[0]; i++ ) {
          printf("%02X", midgReadBuf[i]);
       }
-      bytesRead += midgReadBuf[0];
+  
       
       printf(" (%u remaining in buffer)\n", midgReadBuf[MIDG_CHUNKSIZE-1]);
       printf("%d bytes read so far.\n", bytesRead);
 */
+    bytesRead += midgReadBuf[0];
+
    }
    
    printf("%d bytes read.  now exiting.\n", bytesRead);
