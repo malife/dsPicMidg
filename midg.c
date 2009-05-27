@@ -7,7 +7,9 @@
 
 #include "midg.h"
 #include "apDefinitions.h"
-#include "simpleUart.h"
+
+//#include "simpleUart.h"
+//#include "bufferedUART.h"
 
 // midg.c globals to be set up in init()
 struct CircBuffer midgUartBufferData;  // struct should never be used directly!
